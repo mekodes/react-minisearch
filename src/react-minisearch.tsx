@@ -10,6 +10,7 @@ export interface UseMiniSearch<T = any> {
   add: (document: T) => void,
   addAll: (documents: readonly T[]) => void,
   addAllAsync: (documents: readonly T[], options?: { chunkSize?: number }) => Promise<void>,
+  getById: (id: any) => T | null,
   remove: (document: T) => void,
   removeById: (id: any) => void,
   removeAll: (documents?: readonly T[]) => void,
@@ -78,6 +79,10 @@ export function useMiniSearch<T = any> (documents: readonly T[], options: Option
       })
     }
 
+    const getById = (id: any): T | null => {
+      return documentById[id]
+    }
+
     const remove = (document: T): void => {
       miniSearch.remove(document)
       documentByIdRef.current = removeFromMap<T>(documentById, extractField(document, idField))
@@ -133,6 +138,7 @@ export function useMiniSearch<T = any> (documents: readonly T[], options: Option
       add,
       addAll,
       addAllAsync,
+      getById,
       remove,
       removeById,
       removeAll,
